@@ -9,22 +9,34 @@ type storyPage struct {
 	nextPage *storyPage
 }
 
-func playStory(page *storyPage) {
-	if page == nil {
-		return
+// func (number int) square() {
+// 	5.square()
+// }
+
+func (page *storyPage) playStory() {
+	for page != nil {
+		fmt.Println(page.text)
+		page = page.nextPage
 	}
-	fmt.Println(page.text)
-	playStory(page.nextPage)
+}
+
+func (page *storyPage) addToEnd(text string) {
+	for page.nextPage != nil {
+		page = page.nextPage
+	}
+	page.nextPage = &storyPage{text, nil}
+}
+
+func (page *storyPage) addAfter(text string) {
+	newPage := &storyPage{text, page.nextPage}
+	page.nextPage = newPage
 }
 
 func main() {
 
 	page1 := storyPage{"It was a dark and stormy night.", nil}
-	page2 := storyPage{"You are alone, and you need to find the sacred helmet before the bad guys do.", nil}
-	page3 := storyPage{"You see a troll ahead", nil}
-
-	page1.nextPage = &page2
-	page2.nextPage = &page3
-
-	playStory(&page1)
+	page1.addToEnd("You are alone, and you need to find the sacred helmet before the bad guys do.")
+	page1.addToEnd("You see a troll ahead")
+	page1.addAfter("Testing addAfter")
+	page1.playStory()
 }
