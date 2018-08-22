@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -24,13 +25,24 @@ func main() {
 	city := scanner.Text()
 	fmt.Println("Retrieving the weather for", city)
 	url := buildURL(city)
-	fmt.Println(url)
 	res, err := http.Get(url)
 	if err != nil {
 		fmt.Println("An error occurred: ", err)
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	res.Body.Close()
-	fmt.Println(res)
-	fmt.Println("finished", string(body))
+	responseBody := string(body)
+	var data map[string]interface{}
+	error := json.Unmarshal([]byte(responseBody), &data)
+	if error != nil {
+		panic(error)
+	}
+	d := data["main"].(map[string]interface{})
+	// for k, v := range d {
+	// 	fmt.Printf("key[%s] value[%s]\n", k, v)
+	// }
+	fmt.Println("Here's the current weather in", city)
+	fmt.Println("High:", d["temp_max"])
+	fmt.Println("Low:", d["temp_min"])
+	fmt.Println("Humidity:", d["humidity"])
 }
