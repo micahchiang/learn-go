@@ -42,7 +42,7 @@ func main() {
 	// 	fmt.Printf("key[%s] value[%s]\n", k, v)
 	// }
 	fmt.Println("Here's the current weather in", city)
-	fmt.Println("High:", d["temp_max"])
-	fmt.Println("Low:", d["temp_min"])
+	fmt.Println("High:", d["temp_max"], "'C")
+	fmt.Println("Low:", d["temp_min"], "'C")
 	fmt.Println("Humidity:", d["humidity"])
 }
